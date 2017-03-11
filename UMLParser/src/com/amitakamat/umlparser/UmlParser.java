@@ -6,17 +6,26 @@ package com.amitakamat.umlparser;
 /**
 
  * @author Amita Vasudev Kamat
- * 
-
+ *
  */
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.*;
+import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.ReferenceType;
+import com.github.javaparser.ast.type.Type;
 public class UmlParser {
 
 	/**
@@ -126,6 +135,8 @@ public class UmlParser {
 					eachLineContent = bufferReader.readLine();
 				}
 				
+				bufferReader.close();
+				
 				//System.out.println("\n Contents of file " + javaSourceFiles.get(i) + " :\n\n");
 				//System.out.println(fileContents.toString());
 
@@ -141,31 +152,162 @@ public class UmlParser {
 	private static void parseCode(String fileContent){
 		CompilationUnit compileUnit = JavaParser.parse(fileContent);
 		NodeList<TypeDeclaration<?>> types = compileUnit.getTypes();
-		getClassNames(types);
-		getInterfaceNames(types);
+		
+		ArrayList<String> classNames = getClassNames(types);
+		ArrayList<String> interfaceNames = getInterfaceNames(types);
+		ArrayList<String> classInterfaceNames = classNames;
+		classInterfaceNames.addAll(interfaceNames);
+		
+		HashMap<String, ClassInterfaceInfo> ClassInterfaceDetails = getClassOrInterfaceInfo(types, classInterfaceNames);
 		//System.out.println("\n Types are : " + types.size());
 		
+		System.out.println("\n Class Names : " + classInterfaceNames.toString());
+		System.out.println("\n Class Details: ");
+		for(int i=0;i<classInterfaceNames.size(); i++){
+			System.out.println(ClassInterfaceDetails.get(classInterfaceNames.get(i)));
+		}
+		
 		
 	}
 	
-	private static void getClassNames(NodeList<TypeDeclaration<?>> types){
+	private static ArrayList<String> getClassNames(NodeList<TypeDeclaration<?>> types){
 		ArrayList<String> classNames = new ArrayList<String>();
 		for(int i=0; i< types.size(); i++){
-			if(types.get(i) instanceof ClassOrInterfaceDeclaration && !((ClassOrInterfaceDeclaration) types.get(i)).isInterface()){
-				classNames.add(types.get(i).getNameAsString());
+			TypeDeclaration<?> node = types.get(i);
+			if(node instanceof ClassOrInterfaceDeclaration && !((ClassOrInterfaceDeclaration) node).isInterface()){
+				classNames.add(node.getNameAsString());
 			}
 		}
-		System.out.println("\n Class Names : " + classNames.toString());
+		
+		return classNames;
 	}
 	
-	private static void getInterfaceNames(NodeList<TypeDeclaration<?>> types){
+	private static ArrayList<String> getInterfaceNames(NodeList<TypeDeclaration<?>> types){
 		ArrayList<String> interfaceNames = new ArrayList<String>();
 		for(int i=0; i< types.size(); i++){
+			TypeDeclaration<?> node = types.get(i);
 			if(types.get(i) instanceof ClassOrInterfaceDeclaration && ((ClassOrInterfaceDeclaration) types.get(i)).isInterface()){
-				interfaceNames.add(types.get(i).getNameAsString());
+				interfaceNames.add(node.getNameAsString());
 			}
 		}
-		System.out.println("\n Interface Names : " + interfaceNames.toString());
+		
+		return interfaceNames;
+	}
+	
+	private static HashMap<String, ClassInterfaceInfo> getClassOrInterfaceInfo(NodeList<TypeDeclaration<?>> types, ArrayList<String> classOrInterfaceNames){
+		HashMap<String, ClassInterfaceInfo> sourceClassesOrInterfaces = new HashMap<>();
+		
+		for(int i=0; i< types.size(); i++){
+			TypeDeclaration<?> node = types.get(i);
+			ClassInterfaceInfo classOrInterfaceInfo = new ClassInterfaceInfo(getAttributes(node, classOrInterfaceNames), 
+																	getMethodsDetails(node), getImplementsInfo(node), getExtendsInfo(node));
+			sourceClassesOrInterfaces.put(node.getNameAsString(), classOrInterfaceInfo);
+		}
+	
+		return sourceClassesOrInterfaces;
+	}
+	
+	private static ArrayList<String> getImplementsInfo(TypeDeclaration<?> node){
+		ArrayList<String> implementsInfo = new ArrayList<String>();
+		if(node instanceof ClassOrInterfaceDeclaration){
+			NodeList<ClassOrInterfaceType> implementsList = ((ClassOrInterfaceDeclaration) node).getImplementedTypes();
+			for(ClassOrInterfaceType implement : implementsList){
+				implementsInfo.add(implement.getNameAsString());
+			}
+		}
+		
+		return implementsInfo;
+	}
+	
+	private static ArrayList<String> getExtendsInfo(TypeDeclaration<?> node){
+		ArrayList<String> extendsInfo = new ArrayList<String>();
+		if(node instanceof ClassOrInterfaceDeclaration){
+			NodeList<ClassOrInterfaceType> extendsList = ((ClassOrInterfaceDeclaration) node).getExtendedTypes();
+			for(ClassOrInterfaceType extend : extendsList){
+				extendsInfo.add(extend.getNameAsString());
+			}
+		}
+		
+		return extendsInfo;
+	}
+	
+	private static ArrayList<ClassInterfaceAttributeInfo> getAttributes(TypeDeclaration<?> node, ArrayList<String> classOrInterfaceNames){
+		List<FieldDeclaration> members = node.getFields();
+		String accessModifier = null;
+		ArrayList<ClassInterfaceAttributeInfo> attributes = new ArrayList<ClassInterfaceAttributeInfo>();
+		if(members.size() != 0){
+			for(BodyDeclaration<?> member : members){
+				FieldDeclaration field = (FieldDeclaration) member;
+				String oneToOne = "";
+				String oneToMany = "";
+				
+				if(field.isPrivate())
+					accessModifier = "Private";
+				
+				if(field.isPublic())
+					accessModifier = "Public";
+				
+				Type dataType = field.getVariables().get(0).getType();
+				String dataTypeStrValue = dataType.toString();
+				
+				if(classOrInterfaceNames.contains(dataTypeStrValue)){
+					oneToOne = dataTypeStrValue;
+				}
+				else{
+					if(dataType instanceof ReferenceType){
+						ReferenceType<?> refType = (ReferenceType<?>)dataType;
+						if(refType instanceof  ClassOrInterfaceType)
+						{
+							NodeList<Type> arguments = ((ClassOrInterfaceType) refType).getTypeArguments().get();
+							if(arguments.size() != 0)
+							{
+								String relatedToClass = arguments.get(0).toString();
+									if(classOrInterfaceNames.contains(relatedToClass)){
+										oneToMany = relatedToClass;
+									}
+							}
+						}
+					}
+				}
+				
+				//attributes.add(new ClassAttributeInfo(field.getVariables().get(0).getNameAsString(), 
+				//		accessModifier, 
+				//		field.getElementType().toString()));
+				
+				attributes.add(new ClassInterfaceAttributeInfo(field.getVariables().get(0).getNameAsString(), 
+						accessModifier, dataType.toString(), oneToOne, oneToMany));
+				
+				 
+				
+			}
+		}
+		return attributes;
+	}
+	
+	private static ArrayList<ClassInterfaceMethodInfo> getMethodsDetails(TypeDeclaration<?> node){
+		ArrayList<ClassInterfaceMethodInfo> methodList = new ArrayList<ClassInterfaceMethodInfo>();
+		List<MethodDeclaration> methods = node.getMethods();
+		if(methods.size() != 0){
+			for(MethodDeclaration method : methods){
+				if(method.isPublic()){
+					ArrayList<ArrayList<String>> parameters = new ArrayList<ArrayList<String>>();
+					for( int i=0; i < method.getParameters().size(); i++){
+						//System.out.println(method.getParameters());
+						Parameter parameter = method.getParameter(i);
+						ArrayList<String> eachParameter = new ArrayList<String>();
+						eachParameter.add(parameter.getNameAsString());
+						eachParameter.add(parameter.getType().toString());
+						parameters.add(eachParameter);
+					}
+					
+					methodList.add(new ClassInterfaceMethodInfo(method.getNameAsString(),
+							parameters,
+							method.getType().toString()));
+				}
+			}
+		}
+		
+		return methodList;
 	}
 	
 	

@@ -1,0 +1,39 @@
+package com.amitakamat.umlparser;
+
+import java.util.ArrayList;
+
+public class ClassInterfaceMethodInfo {
+	private String name; 
+	private ArrayList<ArrayList<String>> parameters;
+	private String returnType;
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	public ArrayList<ArrayList<String>> getParameters(){
+		return this.parameters;
+	}
+	
+	public void setAccessModifier(ArrayList<ArrayList<String>> parameters){
+		this.parameters = parameters;
+	}
+	
+	public String getReturnType(){
+		return this.returnType;
+	}
+	
+	public void setDataType(String returnType){
+		this.returnType = returnType;
+	}
+	
+	public ClassInterfaceMethodInfo(String name, ArrayList<ArrayList<String>> parameters, String returnType){
+		this.name = name;
+		this.parameters = parameters;
+		this.returnType = returnType;
+	}
+}
