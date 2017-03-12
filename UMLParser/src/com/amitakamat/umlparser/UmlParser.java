@@ -270,9 +270,6 @@ public class UmlParser {
 					}
 				}
 				
-				//attributes.add(new ClassAttributeInfo(field.getVariables().get(0).getNameAsString(), 
-				//		accessModifier, 
-				//		field.getElementType().toString()));
 				
 				attributes.add(new ClassInterfaceAttributeInfo(field.getVariables().get(0).getNameAsString(), 
 						accessModifier, dataType.toString(), oneToOne, oneToMany));
