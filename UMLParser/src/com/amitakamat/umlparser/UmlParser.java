@@ -45,7 +45,7 @@ public class UmlParser {
 		//{
 			try{
 				//String sourceFolder = args[0];
-				String sourceFolder = "../UmlParser-2/src";
+				String sourceFolder = "UmlParser-1/src";
 				ArrayList<String> sourceCodeFiles = getJavaSourceFiles(sourceFolder);
 				if(sourceCodeFiles.size() == 0)
 				{
@@ -240,42 +240,47 @@ public class UmlParser {
 				FieldDeclaration field = (FieldDeclaration) member;
 				String oneToOne = "";
 				String oneToMany = "";
+				boolean isPrivateOrPublic = false;
 				
-				if(field.isPrivate())
+				if(field.isPrivate()){
 					accessModifier = "Private";
-				
-				if(field.isPublic())
-					accessModifier = "Public";
-				
-				Type dataType = field.getVariables().get(0).getType();
-				String dataTypeStrValue = dataType.toString();
-				
-				if(classOrInterfaceNames.contains(dataTypeStrValue)){
-					oneToOne = dataTypeStrValue;
+					isPrivateOrPublic = true;
 				}
-				else{
-					if(dataType instanceof ReferenceType){
-						ReferenceType<?> refType = (ReferenceType<?>)dataType;
-						if(refType instanceof  ClassOrInterfaceType)
-						{
-							NodeList<Type> arguments = ((ClassOrInterfaceType) refType).getTypeArguments().get();
-							if(arguments.size() != 0)
+				
+				else if(field.isPublic()) {
+					accessModifier = "Public";
+					isPrivateOrPublic = true;
+				}
+				
+				if(isPrivateOrPublic) {
+					Type dataType = field.getVariables().get(0).getType();
+					String dataTypeStrValue = dataType.toString();
+					
+					if(classOrInterfaceNames.contains(dataTypeStrValue)){
+						oneToOne = dataTypeStrValue;
+					}
+					else{
+						if(dataType instanceof ReferenceType){
+							ReferenceType<?> refType = (ReferenceType<?>)dataType;
+							if(refType instanceof  ClassOrInterfaceType)
 							{
-								String relatedToClass = arguments.get(0).toString();
-									if(classOrInterfaceNames.contains(relatedToClass)){
-										oneToMany = relatedToClass;
-									}
+								NodeList<Type> arguments = ((ClassOrInterfaceType) refType).getTypeArguments().get();
+								if(arguments.size() != 0)
+								{
+									String relatedToClass = arguments.get(0).toString();
+										if(classOrInterfaceNames.contains(relatedToClass)){
+											oneToMany = relatedToClass;
+										}
+								}
 							}
 						}
 					}
+				
+				
+					attributes.add(new ClassInterfaceAttributeInfo(field.getVariables().get(0).getNameAsString(), 
+							accessModifier, dataType.toString(), oneToOne, oneToMany));
+								
 				}
-				
-				
-				attributes.add(new ClassInterfaceAttributeInfo(field.getVariables().get(0).getNameAsString(), 
-						accessModifier, dataType.toString(), oneToOne, oneToMany));
-				
-				 
-				
 			}
 		}
 		return attributes;
@@ -306,7 +311,4 @@ public class UmlParser {
 		
 		return methodList;
 	}
-	
-	
-
 }
