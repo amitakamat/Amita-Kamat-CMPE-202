@@ -264,13 +264,16 @@ public class UmlParser {
 							ReferenceType<?> refType = (ReferenceType<?>)dataType;
 							if(refType instanceof  ClassOrInterfaceType)
 							{
-								NodeList<Type> arguments = ((ClassOrInterfaceType) refType).getTypeArguments().get();
-								if(arguments.size() != 0)
-								{
-									String relatedToClass = arguments.get(0).toString();
+								Optional<NodeList<Type>> typeArguments = ((ClassOrInterfaceType) refType).getTypeArguments();
+								if(typeArguments.isPresent()){
+									NodeList<Type> arguments = ((ClassOrInterfaceType) refType).getTypeArguments().get();
+									if(arguments.size() != 0)
+									{
+										String relatedToClass = arguments.get(0).toString();
 										if(classOrInterfaceNames.contains(relatedToClass)){
 											oneToMany = relatedToClass;
 										}
+									}
 								}
 							}
 						}
