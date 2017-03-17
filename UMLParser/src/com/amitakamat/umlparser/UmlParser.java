@@ -26,6 +26,8 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
+import net.sourceforge.plantuml.*;
+import net.sourceforge.plantuml.SourceStringReader;
 public class UmlParser {
 
 	/**
@@ -167,6 +169,16 @@ public class UmlParser {
 			System.out.println(ClassInterfaceDetails.get(classInterfaceNames.get(i)));
 		}
 		
+		String outputFile = "Output-Diagrams/OutputClassDiagram.png";
+		String grammar = "@startuml\nObject <|-- ArrayList\nObject : equals()\nArrayList : Object[] elementData\nArrayList : size()\n@enduml";
+		try{
+			SourceStringReader grammarReader = new SourceStringReader(grammar);
+			FileOutputStream outputStream = new FileOutputStream(outputFile);
+			grammarReader.generateImage(outputStream);
+		}
+		catch(Exception e){
+			System.out.println(e.getMessage());
+		}
 		
 	}
 	
