@@ -211,8 +211,9 @@ public class UmlParser {
 		
 		for(int i=0; i< types.size(); i++){
 			TypeDeclaration<?> node = types.get(i);
-			ClassInterfaceInfo classOrInterfaceInfo = new ClassInterfaceInfo(getAttributes(node, classOrInterfaceNames), 
-																	getMethodsDetails(node), getImplementsInfo(node), getExtendsInfo(node));
+			ArrayList<ClassInterfaceAttributeInfo> attributeInfo = getAttributes(node, classOrInterfaceNames);
+			ArrayList<ClassInterfaceMethodInfo> methodsInfo = getMethodsDetails(node, attributeInfo);
+			ClassInterfaceInfo classOrInterfaceInfo = new ClassInterfaceInfo(attributeInfo, methodsInfo, getImplementsInfo(node), getExtendsInfo(node));
 			sourceClassesOrInterfaces.put(node.getNameAsString(), classOrInterfaceInfo);
 		}
 	
@@ -301,12 +302,22 @@ public class UmlParser {
 		return attributes;
 	}
 	
-	private static ArrayList<ClassInterfaceMethodInfo> getMethodsDetails(TypeDeclaration<?> node){
+	private static ArrayList<ClassInterfaceMethodInfo> getMethodsDetails(TypeDeclaration<?> node, ArrayList<ClassInterfaceAttributeInfo> attributeInfo){
 		ArrayList<ClassInterfaceMethodInfo> methodList = new ArrayList<ClassInterfaceMethodInfo>();
 		List<MethodDeclaration> methods = node.getMethods();
 		if(methods.size() != 0){
 			for(MethodDeclaration method : methods){
 				if(method.isPublic()){
+					for(int j=0;j<attributeInfo.size(); j++){
+						if(attributeInfo.get(j).getAccessModifier() == "Private"){
+							String attributeName = attributeInfo.get(j).getName();
+							String getter = "get" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+							System.out.println(getter);
+							String setter = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+							System.out.println(setter);
+						}
+					}
+					
 					ArrayList<ArrayList<String>> parameters = new ArrayList<ArrayList<String>>();
 					for( int i=0; i < method.getParameters().size(); i++){
 						//System.out.println(method.getParameters());
