@@ -308,6 +308,7 @@ public class UmlParser {
 		if(methods.size() != 0){
 			for(MethodDeclaration method : methods){
 				if(method.isPublic()){
+					String name = method.getNameAsString();
 					for(int j=0;j<attributeInfo.size(); j++){
 						if(attributeInfo.get(j).getAccessModifier() == "Private"){
 							String attributeName = attributeInfo.get(j).getName();
@@ -315,6 +316,10 @@ public class UmlParser {
 							System.out.println(getter);
 							String setter = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
 							System.out.println(setter);
+							
+							if(name.equals(getter) || name.equals(setter)){
+								attributeInfo.get(j).setAccessModifier("Public");
+							}
 						}
 					}
 					
