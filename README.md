@@ -1,2 +1,5 @@
 # Amita-Kamat-CMPE-202
-Source code for all labs, assignments and projects
+
+Source Code for uml parser
+
+I will be using plantUML tool to generate the class diagram from the source code provided.
