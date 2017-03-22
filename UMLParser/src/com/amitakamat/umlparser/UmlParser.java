@@ -148,7 +148,8 @@ public class UmlParser {
 				System.out.println("\n" + e.getMessage());
 			}
 		}
-		parseCode(fileContents.toString());
+		String parseContent = fileContents.toString().replaceAll("import", "//import");
+		parseCode(parseContent);
 	}
 	
 	private static void parseCode(String fileContent){
