@@ -157,9 +157,16 @@ public class UmlParser {
 		NodeList<TypeDeclaration<?>> types = compileUnit.getTypes();
 		
 		ArrayList<String> classNames = getClassNames(types);
+		System.out.println(classNames.toString());
 		ArrayList<String> interfaceNames = getInterfaceNames(types);
-		ArrayList<String> classInterfaceNames = classNames;
-		classInterfaceNames.addAll(interfaceNames);
+		ArrayList<String> classInterfaceNames = new ArrayList<String>();
+		for (String className : classNames){
+			classInterfaceNames.add(new String(className));
+		}
+		for (String interfaceName : interfaceNames){
+			classInterfaceNames.add(new String(interfaceName));
+		}
+		//classInterfaceNames.addAll(interfaceNames);
 		
 		HashMap<String, ClassInterfaceInfo> ClassInterfaceDetails = getClassOrInterfaceInfo(types, classInterfaceNames);
 		//System.out.println("\n Types are : " + types.size());
