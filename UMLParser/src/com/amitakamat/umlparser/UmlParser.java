@@ -47,7 +47,7 @@ public class UmlParser {
 		//{
 			try{
 				//String sourceFolder = args[0];
-				String sourceFolder = "UmlParser-1/src";
+				String sourceFolder = "../Test-Cases/UmlParser-1/";
 				ArrayList<String> sourceCodeFiles = getJavaSourceFiles(sourceFolder);
 				if(sourceCodeFiles.size() == 0)
 				{
@@ -177,7 +177,7 @@ public class UmlParser {
 			System.out.println(ClassInterfaceDetails.get(classInterfaceNames.get(i)));
 		}
 		
-		String outputFile = "Output-Diagrams/OutputClassDiagram.png";
+		String outputFile = "../Output-Diagrams/OutputClassDiagram.png";
 		String grammar = "@startuml\nObject <|-- ArrayList\nObject : equals()\nArrayList : Object[] elementData\nArrayList : size()\n@enduml";
 		try{
 			SourceStringReader grammarReader = new SourceStringReader(grammar);
@@ -250,6 +250,22 @@ public class UmlParser {
 		}
 		
 		return extendsInfo;
+	}
+	
+	private static ArrayList<String> getUsesInfo(ArrayList<ClassInterfaceAttributeInfo> attributeInfo, ArrayList<ClassInterfaceMethodInfo> methodInfo, ArrayList<String> classInterfaceNames){
+		ArrayList<String> usesInfo = new ArrayList<String>();
+		if(attributeInfo.size() > 0) {
+			for(ClassInterfaceAttributeInfo eachAttribute : attributeInfo){
+				String type = eachAttribute.getDataType();
+				if(classInterfaceNames.contains(type)){
+					if(!usesInfo.contains(type)){
+						usesInfo.add(type);
+					}
+				}
+			}
+		}
+		
+		return usesInfo;
 	}
 	
 	private static ArrayList<ClassInterfaceAttributeInfo> getAttributes(TypeDeclaration<?> node, ArrayList<String> classOrInterfaceNames){
