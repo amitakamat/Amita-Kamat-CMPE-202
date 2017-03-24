@@ -265,6 +265,27 @@ public class UmlParser {
 			}
 		}
 		
+		if(methodInfo.size() > 0) {
+			for(ClassInterfaceMethodInfo eachMethod : methodInfo){
+				ArrayList<ArrayList<String>> parameters = eachMethod.getParameters();
+				String returnType = eachMethod.getReturnType();
+				if(classInterfaceNames.contains(returnType)){
+					if(!usesInfo.contains(returnType)){
+						usesInfo.add(returnType);
+					}
+				}
+				
+				for(ArrayList<String> eachParameter: parameters){
+					String type = eachParameter.get(1);
+					if(classInterfaceNames.contains(type)){
+						if(!usesInfo.contains(type)){
+							usesInfo.add(type);
+						}
+					}
+				}
+			}
+		}
+		
 		return usesInfo;
 	}
 	
