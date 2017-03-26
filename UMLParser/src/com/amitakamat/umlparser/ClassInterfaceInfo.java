@@ -43,6 +43,9 @@ public class ClassInterfaceInfo {
 		return this.extendsInfo;
 	}
 	
+	/*
+	 * Gets the uses class information of a class
+	 */
 	public ArrayList<String> getUsesInfo(){
 		return this.usesInfo;
 	}
