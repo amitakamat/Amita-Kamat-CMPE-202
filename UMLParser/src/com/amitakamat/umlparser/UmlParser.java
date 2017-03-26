@@ -221,7 +221,7 @@ public class UmlParser {
 			TypeDeclaration<?> node = types.get(i);
 			ArrayList<ClassInterfaceAttributeInfo> attributeInfo = getAttributes(node, classOrInterfaceNames);
 			ArrayList<ClassInterfaceMethodInfo> methodsInfo = getMethodsDetails(node, attributeInfo);
-			ClassInterfaceInfo classOrInterfaceInfo = new ClassInterfaceInfo(attributeInfo, methodsInfo, getImplementsInfo(node), getExtendsInfo(node));
+			ClassInterfaceInfo classOrInterfaceInfo = new ClassInterfaceInfo(attributeInfo, methodsInfo, getImplementsInfo(node), getExtendsInfo(node), getUsesInfo(attributeInfo, methodsInfo, classOrInterfaceNames));
 			sourceClassesOrInterfaces.put(node.getNameAsString(), classOrInterfaceInfo);
 		}
 	
