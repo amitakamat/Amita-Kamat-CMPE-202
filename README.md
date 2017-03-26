@@ -9,3 +9,12 @@ The code uses the following tools to generate class diagram from given test code
 
 2. PlantUML :
    This tool generates class diagram from the grammar created.
+
+Required Inputs:
+
+1. Source Folder Path:
+The user should pass the source folder path for the java files to be parsed.
+
+2. Output UML Diagram Name (Optional):
+The user can provide the name of output UML diagram.
+If the name of output diagram is not mentioned, a default name would be given to the output diagram.
