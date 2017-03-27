@@ -361,6 +361,10 @@ public class UmlParser {
 				for( int i=0; i < constructor.getParameters().size(); i++){
 					//System.out.println(method.getParameters());
 					Parameter parameter = constructor.getParameter(i);
+					ArrayList<String> eachParameter = new ArrayList<String>();
+					eachParameter.add(parameter.getNameAsString());						
+					eachParameter.add(parameter.getType().toString());
+					parameters.add(eachParameter);
 				}
 				
 				methodList.add(new ClassInterfaceMethodInfo(constructor.getNameAsString(),
