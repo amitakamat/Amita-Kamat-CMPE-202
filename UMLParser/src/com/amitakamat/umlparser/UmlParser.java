@@ -363,7 +363,7 @@ public class UmlParser {
 					Parameter parameter = constructor.getParameter(i);
 				}
 				
-				methodList.add(new ClassInterfaceMethodInfo(name,
+				methodList.add(new ClassInterfaceMethodInfo(constructor.getNameAsString(),
 						parameters,
 						"void"));
 			}
