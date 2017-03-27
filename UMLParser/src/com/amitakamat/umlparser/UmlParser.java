@@ -19,6 +19,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.*;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -350,6 +351,26 @@ public class UmlParser {
 	private static ArrayList<ClassInterfaceMethodInfo> getMethodsDetails(TypeDeclaration<?> node, ArrayList<ClassInterfaceAttributeInfo> attributeInfo){
 		ArrayList<ClassInterfaceMethodInfo> methodList = new ArrayList<ClassInterfaceMethodInfo>();
 		List<MethodDeclaration> methods = node.getMethods();
+		List<BodyDeclaration<?>> body = node.getMembers();
+		for(BodyDeclaration<?> eachMember: body){
+			if(eachMember instanceof ConstructorDeclaration)
+			{
+				String name = node.getNameAsString();
+				ConstructorDeclaration constructor = (ConstructorDeclaration) eachMember;
+				ArrayList<ArrayList<String>> parameters = new ArrayList<ArrayList<String>>();
+				for( int i=0; i < constructor.getParameters().size(); i++){
+					//System.out.println(method.getParameters());
+					Parameter parameter = constructor.getParameter(i);
+				}
+				
+				methodList.add(new ClassInterfaceMethodInfo(name,
+						parameters,
+						"void"));
+			}
+			
+		}
+		
+		
 		if(methods.size() != 0){
 			for(MethodDeclaration method : methods){
 				if(method.isPublic()){
