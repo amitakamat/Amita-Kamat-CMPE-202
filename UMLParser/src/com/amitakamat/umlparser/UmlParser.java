@@ -150,7 +150,7 @@ public class UmlParser {
 			}
 		}
 		String parseContent = fileContents.toString().replace("import", "//import");
-		new ParsingEngine().parseCode(parseContent);
+		ParsingEngine.parseCode(parseContent);
 	}
 	
 	
