@@ -1,34 +1,17 @@
-package com.amitakamat.umlparser;
 /**
- * 
- */
-
-/**
-
  * @author Amita Vasudev Kamat
+ * 
+ * CMPE 202 - Personal Project
+ * 
+ * Spring 2017
  *
  */
 
+package com.amitakamat.umlparser;
+
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 
-import com.github.javaparser.JavaParser;
-import com.github.javaparser.ast.*;
-import com.github.javaparser.ast.body.BodyDeclaration;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
-import com.github.javaparser.ast.type.ReferenceType;
-import com.github.javaparser.ast.type.Type;
-import net.sourceforge.plantuml.*;
-import net.sourceforge.plantuml.SourceStringReader;
 public class UmlParser {
 
 	/**
@@ -66,6 +49,7 @@ public class UmlParser {
 		//}
 		
 	}
+	
 	
 	/**
 	 * Method to retrieve all the java files from the source folder
@@ -152,7 +136,4 @@ public class UmlParser {
 		String parseContent = fileContents.toString().replace("import", "//import");
 		ParsingEngine.parseCode(parseContent);
 	}
-	
-	
-		
 }
