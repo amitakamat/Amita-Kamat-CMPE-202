@@ -18,3 +18,9 @@ The user should pass the source folder path for the java files to be parsed.
 2. Output UML Diagram Name (Optional):
 The user can provide the name of output UML diagram.
 If the name of output diagram is not mentioned, a default name would be given to the output diagram.
+
+
+Required Tools:
+
+1. Graphviz:
+Installation of Graphviz is required to generate the diagrams using PlantUML.
