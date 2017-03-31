@@ -226,7 +226,7 @@ public class ParsingEngine {
 		for(BodyDeclaration<?> eachMember: body){
 			if(eachMember instanceof ConstructorDeclaration)
 			{
-				String name = node.getNameAsString();
+				//String name = node.getNameAsString();
 				ConstructorDeclaration constructor = (ConstructorDeclaration) eachMember;
 				ArrayList<ArrayList<String>> parameters = new ArrayList<ArrayList<String>>();
 				for( int i=0; i < constructor.getParameters().size(); i++){

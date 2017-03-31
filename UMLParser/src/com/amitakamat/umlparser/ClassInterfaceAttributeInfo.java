@@ -71,7 +71,7 @@ public class ClassInterfaceAttributeInfo {
 		}
 		
 		/*
-		 * Parametrized constructor to create an object with the given values
+		 * Parameterized constructor to create an object with the given values
 		 */
 		public ClassInterfaceAttributeInfo(String name, String accessModifier, String dataType, String oneToOne, String oneToMany){
 			this.name = name;
