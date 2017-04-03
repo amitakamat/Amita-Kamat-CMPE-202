@@ -1,10 +1,18 @@
+/**
+ * @author Amita Vasudev Kamat
+ * 
+ * CMPE 202 - Personal Project
+ * 
+ * Spring 2017
+ *
+ */
+
 package com.amitakamat.umlparser;
 
 import java.util.ArrayList;
 
 /**
  * 
- * @author Amita Vasudev Kamat
  * Class to store all the information of a class or an interface
  *
  */

@@ -1,7 +1,16 @@
+/**
+ * @author Amita Vasudev Kamat
+ * 
+ * CMPE 202 - Personal Project
+ * 
+ * Spring 2017
+ *
+ */
+
 package com.amitakamat.umlparser;
 
 /*
- * Class to store the information of the atrributes of classes and interfaces
+ * Class to store the information of the attributes of classes and interfaces
  */
 public class ClassInterfaceAttributeInfo {
 		private String name; 

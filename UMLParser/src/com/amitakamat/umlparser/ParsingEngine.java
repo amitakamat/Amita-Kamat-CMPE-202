@@ -1,3 +1,12 @@
+/**
+ * @author Amita Vasudev Kamat
+ * 
+ * CMPE 202 - Personal Project
+ * 
+ * Spring 2017
+ *
+ */
+
 package com.amitakamat.umlparser;
 
 import java.io.FileOutputStream;
