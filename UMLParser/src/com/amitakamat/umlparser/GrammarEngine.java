@@ -11,16 +11,25 @@ package com.amitakamat.umlparser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class GrammarEngine {
 	
 	public static String generateGrammar(HashMap<String, ClassInterfaceInfo> classInterfaceInfo, ArrayList<String> classNames, ArrayList<String> interfaceNames){
 		String grammar = "@startuml\n";
-		grammar += "interface TestInterface {\n";
-		grammar += "}\n";
-		grammar += "class TestClass {\n";
-		grammar += "}\n";
-		grammar += "TestClass ..|> TestInterface\n";
+		
+		System.out.println(classNames.toString());
+		System.out.println("\n\n\n" + interfaceNames.toString());
+		for(Entry<String, ClassInterfaceInfo> e: (Set<Entry<String, ClassInterfaceInfo>>)classInterfaceInfo.entrySet()){
+			String name = e.getKey();
+			if(interfaceNames.contains(name)){
+				grammar += "interface " + name + " {\n";
+				grammar += "}\n";
+			}
+			
+		}
+		
 		grammar += "@enduml";
 		
 		System.out.println(grammar);
