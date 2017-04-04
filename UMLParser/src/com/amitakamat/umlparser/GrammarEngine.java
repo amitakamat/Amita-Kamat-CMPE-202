@@ -18,13 +18,25 @@ public class GrammarEngine {
 	
 	public static String generateGrammar(HashMap<String, ClassInterfaceInfo> classInterfaceInfo, ArrayList<String> classNames, ArrayList<String> interfaceNames){
 		String grammar = "@startuml\n";
+		boolean blockStarted = false;
 		
 		System.out.println(classNames.toString());
 		System.out.println("\n\n\n" + interfaceNames.toString());
 		for(Entry<String, ClassInterfaceInfo> e: (Set<Entry<String, ClassInterfaceInfo>>)classInterfaceInfo.entrySet()){
 			String name = e.getKey();
+			blockStarted = false;
+			
 			if(interfaceNames.contains(name)){
 				grammar += "interface " + name + " {\n";
+				blockStarted = true;
+			}
+			
+			if(classNames.contains(name)){
+				grammar += "class " + name + " {\n";
+				blockStarted = true;
+			}
+			
+			if(blockStarted){
 				grammar += "}\n";
 			}
 			
