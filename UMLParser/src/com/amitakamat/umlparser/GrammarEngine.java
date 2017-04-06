@@ -34,6 +34,17 @@ public class GrammarEngine {
 			if(classNames.contains(name)){
 				grammar += "class " + name + " {\n";
 				blockStarted = true;
+				
+				ArrayList<ClassInterfaceAttributeInfo> attributes = e.getValue().getAttributes();
+				for(int i=0 ;i<attributes.size(); i++){
+					ClassInterfaceAttributeInfo eachAttribute = attributes.get(i);
+					if(eachAttribute.getAccessModifier() == "Private")
+						grammar += "-";
+					else
+						grammar += "+";
+					
+					grammar += eachAttribute.getName() + " : " + eachAttribute.getDataType() + "\n";
+				}
 			}
 			
 			if(blockStarted){
