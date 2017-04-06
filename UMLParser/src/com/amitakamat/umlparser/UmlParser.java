@@ -31,7 +31,7 @@ public class UmlParser {
 		//{
 			try{
 				//String sourceFolder = args[0];
-				String sourceFolder = "../Test-Cases/UmlParser-1/";
+				String sourceFolder = "../Test-Cases/UmlParser-2/";
 				ArrayList<String> sourceCodeFiles = getJavaSourceFiles(sourceFolder);
 				if(sourceCodeFiles.size() == 0)
 				{

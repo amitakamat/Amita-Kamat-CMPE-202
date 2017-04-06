@@ -58,7 +58,7 @@ public class ParsingEngine {
 			System.out.println(ClassInterfaceDetails.get(classInterfaceNames.get(i)));
 		}
 		
-		String outputFile = "../Output-Diagrams/OutputClassDiagram.png";
+		String outputFile = "../Output-Diagrams/OutputClassDiagram1.png";
 		String grammar = GrammarEngine.generateGrammar(ClassInterfaceDetails, classNames, interfaceNames);
 		//String grammar = "@startuml\nObject <|-- ArrayList\nObject : equals()\nArrayList : Object[] elementData\nArrayList : size()\n@enduml";
 		try{
