@@ -258,10 +258,15 @@ public class ParsingEngine {
 		
 		if(methods.size() != 0){
 			for(MethodDeclaration method : methods){
+				boolean isGetterOrSetterMethod = false;
 				if(method.isPublic()){
 					String name = method.getNameAsString();
 					for(int j=0;j<attributeInfo.size(); j++){
-						if(attributeInfo.get(j).getAccessModifier() == "Private"){
+						String accessModifier = attributeInfo.get(j).getAccessModifier();
+						
+						// With a previous getter or setter method the attribute would be set to public.
+						// Hence, we need to compare public too.
+						if(accessModifier == "Private" || accessModifier == "Public"){
 							String attributeName = attributeInfo.get(j).getName();
 							String getter = "get" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
 							System.out.println(getter);
@@ -270,23 +275,27 @@ public class ParsingEngine {
 							
 							if(name.equals(getter) || name.equals(setter)){
 								attributeInfo.get(j).setAccessModifier("Public");
+								isGetterOrSetterMethod = true;
 							}
 						}
 					}
 					
-					ArrayList<ArrayList<String>> parameters = new ArrayList<ArrayList<String>>();
-					for( int i=0; i < method.getParameters().size(); i++){
-						//System.out.println(method.getParameters());
-						Parameter parameter = method.getParameter(i);
-						ArrayList<String> eachParameter = new ArrayList<String>();
-						eachParameter.add(parameter.getNameAsString());
-						eachParameter.add(parameter.getType().toString());
-						parameters.add(eachParameter);
-					}
+					if(!isGetterOrSetterMethod)
+					{
+						ArrayList<ArrayList<String>> parameters = new ArrayList<ArrayList<String>>();
+						for( int i=0; i < method.getParameters().size(); i++){
+							//System.out.println(method.getParameters());
+							Parameter parameter = method.getParameter(i);
+							ArrayList<String> eachParameter = new ArrayList<String>();
+							eachParameter.add(parameter.getNameAsString());
+							eachParameter.add(parameter.getType().toString());
+							parameters.add(eachParameter);
+						}
 					
-					methodList.add(new ClassInterfaceMethodInfo(method.getNameAsString(),
+						methodList.add(new ClassInterfaceMethodInfo(method.getNameAsString(),
 							parameters,
 							method.getType().toString()));
+					}
 				}
 			}
 		}

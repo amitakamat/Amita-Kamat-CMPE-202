@@ -31,7 +31,7 @@ public class UmlParser {
 		//{
 			try{
 				//String sourceFolder = args[0];
-				String sourceFolder = "/home/amita/GitHub 202/Amita-Kamat-CMPE-202/Test-Cases/UmlParser-1/";
+				String sourceFolder = "/home/amita/GitHub 202/Amita-Kamat-CMPE-202/Test-Cases/UmlParser-3/";
 				ArrayList<String> sourceCodeFiles = getJavaSourceFiles(sourceFolder);
 				if(sourceCodeFiles.size() == 0)
 				{
