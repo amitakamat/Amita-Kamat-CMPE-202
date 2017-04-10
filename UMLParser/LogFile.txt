@@ -1,0 +1,7 @@
+Logs
+
+--------Extracting java files from source Folder-----------------
+A.java extracted 
+C.java extracted 
+B.java extracted 
+D.java extracted 
