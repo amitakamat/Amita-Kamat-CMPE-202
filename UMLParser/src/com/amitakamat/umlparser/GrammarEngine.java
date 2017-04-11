@@ -41,9 +41,9 @@ public class GrammarEngine {
 					
 					//Since we consider only private and public attributes.
 					if(eachAttribute.getAccessModifier() == "Private")
-						grammar += "-";
+						grammar += Constants.privateAccess;
 					else
-						grammar += "+";
+						grammar += Constants.publicAccess;
 					
 					grammar += eachAttribute.getName() + " : " + eachAttribute.getDataType() + "\n";
 				}
@@ -53,7 +53,7 @@ public class GrammarEngine {
 			for(int i=0; i<methods.size(); i++)
 			{
 				ClassInterfaceMethodInfo eachMethod = methods.get(i);
-				grammar += "+ " + eachMethod.getName() + "(";
+				grammar += Constants.publicAccess + " " + eachMethod.getName() + "(";
 				
 				for(int j=0; j<eachMethod.getParameters().size(); j++){
 					ArrayList<String> eachParameter = eachMethod.getParameters().get(j);
