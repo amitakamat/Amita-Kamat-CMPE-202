@@ -16,4 +16,5 @@ public class Constants {
 	public static String publicAccess = "+";
 	public static String protectedAccess = "#";
 	public static String packageAccess = "~";
+	public static String implementsSign = " <|.. ";
 }

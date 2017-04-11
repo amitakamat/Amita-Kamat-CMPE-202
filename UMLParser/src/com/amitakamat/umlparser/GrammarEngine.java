@@ -12,7 +12,6 @@ package com.amitakamat.umlparser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Set;
 
 public class GrammarEngine {
 	
@@ -76,7 +75,7 @@ public class GrammarEngine {
 			if(implementsInfo.size() != 0){
 				for(int i=0; i<implementsInfo.size(); i++){
 					if(classNames.contains(name)){
-						grammar += implementsInfo.get(i) + " <|.. " + name + "\n";
+						grammar += implementsInfo.get(i) + Constants.implementsSign + name + "\n";
 					}
 				}
 			}
