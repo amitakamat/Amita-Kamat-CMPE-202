@@ -22,7 +22,7 @@ public class GrammarEngine {
 		
 		System.out.println(classNames.toString());
 		System.out.println("\n\n\n" + interfaceNames.toString());
-		for(Entry<String, ClassInterfaceInfo> e: (Set<Entry<String, ClassInterfaceInfo>>)classInterfaceInfo.entrySet()){
+		for(Entry<String, ClassInterfaceInfo> e: classInterfaceInfo.entrySet()){
 			String name = e.getKey();
 			blockStarted = false;
 			
@@ -68,7 +68,18 @@ public class GrammarEngine {
 			if(blockStarted){
 				grammar += "}\n";
 			}
+		}
 			
+		for(Entry<String, ClassInterfaceInfo> e: classInterfaceInfo.entrySet()){
+			String name = e.getKey();			
+			ArrayList<String> implementsInfo = e.getValue().getImplemensInfo();
+			if(implementsInfo.size() != 0){
+				for(int i=0; i<implementsInfo.size(); i++){
+					if(classNames.contains(name)){
+						grammar += implementsInfo.get(i) + " <|.. " + name + "\n";
+					}
+				}
+			}
 		}
 		
 		grammar += "@enduml";
