@@ -79,15 +79,6 @@ public class GrammarEngine {
 					}
 				}
 			}
-			
-			ArrayList<String> extendsInfo = e.getValue().getExtendsInfo();
-			if(extendsInfo.size() != 0){
-				for(int i=0; i<extendsInfo.size(); i++){
-					if(classNames.contains(name)){
-						grammar += extendsInfo.get(i) + " <|-- " + name + "\n";
-					}
-				}
-			}
 		}
 		
 		grammar += "@enduml";
