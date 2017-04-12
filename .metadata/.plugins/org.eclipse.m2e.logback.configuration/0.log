@@ -604,3 +604,8 @@
 2017-04-11 11:41:39,089 [Worker-116] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 12 resources
 2017-04-11 11:41:39,097 [Worker-116] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 2017-04-11 11:41:39,097 [Worker-116] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/amita/GitHub 202/Amita-Kamat-CMPE-202/UMLParser/src/test/resources
+2017-04-11 13:04:37,350 [Worker-132] ERROR o.e.m.c.i.URLConnectionCaches - Unexpected URLConnection defaultUseCaches enabled
+2017-04-11 13:04:40,202 [Worker-132] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-04-11 13:04:40,613 [Worker-132] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 7 resources
+2017-04-11 13:04:40,901 [Worker-132] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2017-04-11 13:04:40,901 [Worker-132] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /home/amita/GitHub 202/Amita-Kamat-CMPE-202/UMLParser/src/test/resources
