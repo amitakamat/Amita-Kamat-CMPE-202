@@ -84,7 +84,7 @@ public class GrammarEngine {
 			if(extendsInfo.size() != 0){
 				for(int i=0; i<extendsInfo.size(); i++){
 					if(classNames.contains(name)){
-						grammar += extendsInfo.get(i) + " <|-- " + name + "\n";
+						grammar += extendsInfo.get(i) + Constants.extendsSign + name + "\n";
 					}
 				}
 			}
