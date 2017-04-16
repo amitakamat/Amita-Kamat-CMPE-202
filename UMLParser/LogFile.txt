@@ -1,10 +1,5 @@
 Logs
 
 --------Extracting java files from source Folder-----------------
-B1.java extracted 
-A2.java extracted 
-C2.java extracted 
-C1.java extracted 
-P.java extracted 
-A1.java extracted 
-B2.java extracted 
+ClassA.java extracted 
+ClassB.java extracted 
