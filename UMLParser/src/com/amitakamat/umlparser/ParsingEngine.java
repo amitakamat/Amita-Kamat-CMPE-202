@@ -58,7 +58,7 @@ public class ParsingEngine {
 			System.out.println(ClassInterfaceDetails.get(classInterfaceNames.get(i)));
 		}
 		
-		String outputFile = "/home/amita/GitHub 202/Amita-Kamat-CMPE-202/Output-Diagrams/OutputClassDiagram4.png";
+		String outputFile = "/home/amita/GitHub 202/Amita-Kamat-CMPE-202/Output-Diagrams/OutputClassDiagram3.png";
 		String grammar = GrammarEngine.generateGrammar(ClassInterfaceDetails, classNames, interfaceNames);
 		//String grammar = "@startuml\nObject <|-- ArrayList\nObject : equals()\nArrayList : Object[] elementData\nArrayList : size()\n@enduml";
 		try{
@@ -178,6 +178,7 @@ public class ParsingEngine {
 		if(members.size() != 0){
 			for(BodyDeclaration<?> member : members){
 				FieldDeclaration field = (FieldDeclaration) member;
+				System.out.println("attribute name : " + field.getVariables().get(0).getNameAsString());
 				String oneToOne = "";
 				String oneToMany = "";
 				boolean isPrivateOrPublic = false;
@@ -191,8 +192,10 @@ public class ParsingEngine {
 					accessModifier = "Public";
 					isPrivateOrPublic = true;
 				}
+				else{
+					accessModifier = "";
+				}
 				
-				if(isPrivateOrPublic) {
 					Type dataType = field.getVariables().get(0).getType();
 					String dataTypeStrValue = dataType.toString();
 					
@@ -219,11 +222,9 @@ public class ParsingEngine {
 						}
 					}
 				
-				
 					attributes.add(new ClassInterfaceAttributeInfo(field.getVariables().get(0).getNameAsString(), 
 							accessModifier, dataType.toString(), oneToOne, oneToMany));
 								
-				}
 			}
 		}
 		return attributes;
