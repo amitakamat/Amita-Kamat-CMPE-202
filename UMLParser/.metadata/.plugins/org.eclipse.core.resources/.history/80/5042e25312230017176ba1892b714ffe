@@ -93,7 +93,7 @@ public class GrammarEngine {
 			if(usesInfo.size() != 0){
 				for(int i=0; i<usesInfo.size(); i++){
 					if(classNames.contains(name)){
-						grammar += usesInfo.get(i) + Constants.usesSign + name + " : < uses \n";
+						grammar += usesInfo.get(i) + " <.. " + name + " : < uses \n";
 					}
 				}
 			}

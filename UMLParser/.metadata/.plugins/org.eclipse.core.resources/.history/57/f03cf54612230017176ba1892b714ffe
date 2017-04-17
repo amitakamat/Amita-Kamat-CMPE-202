@@ -16,5 +16,4 @@ public class Constants {
 	public static String packageAccess = "~";
 	public static String implementsSign = " <|.. ";
 	public static String extendsSign = " <|-- ";
-	public static String usesSign = " <.. ";
 }
