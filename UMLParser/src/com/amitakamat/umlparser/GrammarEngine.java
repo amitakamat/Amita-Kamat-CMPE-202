@@ -97,6 +97,19 @@ public class GrammarEngine {
 					}
 				}
 			}
+			
+			ArrayList<ClassInterfaceAttributeInfo> attributes = e.getValue().getAttributes();
+			for(int i=0 ;i<attributes.size(); i++){
+				ClassInterfaceAttributeInfo eachAttribute = attributes.get(i);
+				
+				if(eachAttribute.getOneToOne() != "")
+					//grammar += String.format("%s -- %s\n", name, eachAttribute.getOneToOne());
+					grammar += name + " -- " +  eachAttribute.getOneToOne() + "\n";
+				
+				if(eachAttribute.getOneToMany() != "")
+					//grammar += String.format("%s --\"*\" %s\n", name, eachAttribute.getOneToMany());
+					grammar += name + " --\"*\" " +  eachAttribute.getOneToMany() + "\n";
+			}
 		}
 		
 		grammar += Constants.endGrammar;
