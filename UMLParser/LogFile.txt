@@ -1,10 +1,10 @@
 Logs
 
 --------Extracting java files from source Folder-----------------
-B1.java extracted 
-A2.java extracted 
-C2.java extracted 
-C1.java extracted 
-P.java extracted 
-A1.java extracted 
-B2.java extracted 
+TheEconomy.java extracted 
+Pessimist.java extracted 
+ConcreteObserver.java extracted 
+Optimist.java extracted 
+Subject.java extracted 
+ConcreteSubject.java extracted 
+Observer.java extracted 
