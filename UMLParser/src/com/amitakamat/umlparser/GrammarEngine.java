@@ -18,8 +18,11 @@ public class GrammarEngine {
 	public static String generateGrammar(HashMap<String, ClassInterfaceInfo> classInterfaceInfo, ArrayList<String> classNames, ArrayList<String> interfaceNames){
 		String grammar = Constants.startGrammar + "\n";
 		boolean blockStarted = false;
+		HashMap<String, String> associationTarget= new HashMap<String, String>();
+		HashMap<String, HashMap<String, String>> associationMap = new HashMap<String, HashMap<String, String>>();
+		String oneToOne = "OneToOne";
+		String oneToMany = "OneToMany";
 		
-		System.out.println(classNames.toString());
 		System.out.println("\n\n\n" + interfaceNames.toString());
 		for(Entry<String, ClassInterfaceInfo> e: classInterfaceInfo.entrySet()){
 			String name = e.getKey();
@@ -102,15 +105,44 @@ public class GrammarEngine {
 			
 			ArrayList<ClassInterfaceAttributeInfo> attributes = e.getValue().getAttributes();
 			for(int i=0 ;i<attributes.size(); i++){
+				associationTarget = new HashMap<String, String>();
 				ClassInterfaceAttributeInfo eachAttribute = attributes.get(i);
+				String oneToManyInfo = eachAttribute.getOneToMany();
+				String oneToOneInfo = eachAttribute.getOneToOne();
+				if(oneToManyInfo != ""){
+					HashMap<String, String> target = associationMap.get(oneToManyInfo);
+					if(target != null){
+						if(target.get(oneToMany) != null){
+							System.out.println("Replace " + oneToManyInfo + " --\"*\" " + e.getKey() + " with " + oneToManyInfo + " \"*\"--\"*\" " + e.getKey());
+							grammar.replace(oneToManyInfo + " --\"*\" " + e.getKey(),
+									oneToManyInfo + " \"*\"--\"*\" " + e.getKey());
+						}
+						else if(target.get(oneToOne) != null){
+							grammar.replace(oneToManyInfo + " -- " + e.getKey(),
+									oneToManyInfo + " \"*\"-- " + e.getKey());
+						}
+						
+					}
+					else{
+						//grammar += String.format("%s --\"*\" %s\n", name, eachAttribute.getOneToMany());*/
+						System.out.println("Add : " + name + " --\"*\" " + oneToManyInfo + "\n");
+						grammar += name + " --\"*\" " + oneToManyInfo + "\n";
+						//associationMap.put(e.getKey(), associationTarget.put(oneToMany, oneToManyInfo));
+					}
+					associationTarget.put(oneToMany, oneToManyInfo);
+					associationMap.put(name, associationTarget);
+				}
 				
-				if(eachAttribute.getOneToOne() != "")
-					//grammar += String.format("%s -- %s\n", name, eachAttribute.getOneToOne());
-					grammar += name + " -- " +  eachAttribute.getOneToOne() + "\n";
-				
-				if(eachAttribute.getOneToMany() != "")
-					//grammar += String.format("%s --\"*\" %s\n", name, eachAttribute.getOneToMany());
-					grammar += name + " --\"*\" " +  eachAttribute.getOneToMany() + "\n";
+				else if(oneToOneInfo != ""){
+					HashMap<String, String> target = associationMap.get(oneToOneInfo);
+					if(target == null){
+					System.out.println("Add : " + name + " -- " +  eachAttribute.getOneToOne());
+						grammar += name + " -- " +  eachAttribute.getOneToOne() + "\n";
+						associationTarget.put(oneToOne, oneToOneInfo);
+						associationMap.put(e.getKey(), associationTarget);
+					
+					}
+				}
 			}
 		}
 		
