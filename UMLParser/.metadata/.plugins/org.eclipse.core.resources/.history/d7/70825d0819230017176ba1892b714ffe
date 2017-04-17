@@ -16,7 +16,7 @@ import java.util.Map.Entry;
 public class GrammarEngine {
 	
 	public static String generateGrammar(HashMap<String, ClassInterfaceInfo> classInterfaceInfo, ArrayList<String> classNames, ArrayList<String> interfaceNames){
-		String grammar = Constants.startGrammar + "\n";
+		String grammar = "@startuml\n";
 		boolean blockStarted = false;
 		
 		System.out.println(classNames.toString());
@@ -26,12 +26,12 @@ public class GrammarEngine {
 			blockStarted = false;
 			
 			if(interfaceNames.contains(name)){
-				grammar += Constants.interfaceLabel + name + " {\n";
+				grammar += "interface " + name + " {\n";
 				blockStarted = true;
 			}
 			
 			if(classNames.contains(name)){
-				grammar += Constants.classLabel + name + " {\n";
+				grammar += "class " + name + " {\n";
 				blockStarted = true;
 				
 				ArrayList<ClassInterfaceAttributeInfo> attributes = e.getValue().getAttributes();
@@ -99,7 +99,7 @@ public class GrammarEngine {
 			}
 		}
 		
-		grammar += Constants.endGrammar;
+		grammar += "@enduml";
 		
 		System.out.println(grammar);
 		return grammar;

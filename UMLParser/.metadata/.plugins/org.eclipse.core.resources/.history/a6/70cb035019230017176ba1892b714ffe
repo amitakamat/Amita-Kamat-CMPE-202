@@ -31,7 +31,7 @@ public class GrammarEngine {
 			}
 			
 			if(classNames.contains(name)){
-				grammar += Constants.classLabel + name + " {\n";
+				grammar += "class " + name + " {\n";
 				blockStarted = true;
 				
 				ArrayList<ClassInterfaceAttributeInfo> attributes = e.getValue().getAttributes();

@@ -26,12 +26,12 @@ public class GrammarEngine {
 			blockStarted = false;
 			
 			if(interfaceNames.contains(name)){
-				grammar += Constants.interfaceLabel + name + " {\n";
+				grammar += "interface " + name + " {\n";
 				blockStarted = true;
 			}
 			
 			if(classNames.contains(name)){
-				grammar += Constants.classLabel + name + " {\n";
+				grammar += "class " + name + " {\n";
 				blockStarted = true;
 				
 				ArrayList<ClassInterfaceAttributeInfo> attributes = e.getValue().getAttributes();

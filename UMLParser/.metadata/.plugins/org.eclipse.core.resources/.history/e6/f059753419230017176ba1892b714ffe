@@ -19,6 +19,5 @@ public class Constants {
 	public static final String usesSign = " <.. ";
 	public static final String startGrammar = "@startuml";
 	public static final String endGrammar = "@enduml";
-	public static final String interfaceLabel = "interface ";
-	public static final String classLabel = "class ";
+	public static final String interfaceLabel = "interface";
 }
