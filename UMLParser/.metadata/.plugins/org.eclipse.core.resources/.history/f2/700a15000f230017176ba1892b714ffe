@@ -88,16 +88,6 @@ public class GrammarEngine {
 					}
 				}
 			}
-			
-			ArrayList<String> usesInfo = e.getValue().getUsesInfo();
-			if(usesInfo.size() != 0){
-				for(int i=0; i<usesInfo.size(); i++){
-					if(classNames.contains(name)){
-						grammar += usesInfo.get(i) + " <.. " + name + " : < uses \n";
-						System.out.println(name + " uses " + usesInfo.get(i));
-					}
-				}
-			}
 		}
 		
 		grammar += "@enduml";
