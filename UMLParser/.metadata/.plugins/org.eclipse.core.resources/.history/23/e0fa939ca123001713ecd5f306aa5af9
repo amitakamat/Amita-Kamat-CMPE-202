@@ -49,7 +49,7 @@ public class ParsingEngine {
 		}
 		//classInterfaceNames.addAll(interfaceNames);
 		
-		HashMap<String, ClassInterfaceInfo> ClassInterfaceDetails = getClassOrInterfaceInfo(types, classInterfaceNames, interfaceNames);
+		HashMap<String, ClassInterfaceInfo> ClassInterfaceDetails = getClassOrInterfaceInfo(types, classInterfaceNames);
 		//System.out.println("\n Types are : " + types.size());
 		
 		System.out.println("\n Class Names : " + classInterfaceNames.toString());
@@ -96,14 +96,14 @@ public class ParsingEngine {
 		return interfaceNames;
 	}
 	
-	private static HashMap<String, ClassInterfaceInfo> getClassOrInterfaceInfo(NodeList<TypeDeclaration<?>> types, ArrayList<String> classOrInterfaceNames, ArrayList<String> interfaceNames){
+	private static HashMap<String, ClassInterfaceInfo> getClassOrInterfaceInfo(NodeList<TypeDeclaration<?>> types, ArrayList<String> classOrInterfaceNames){
 		HashMap<String, ClassInterfaceInfo> sourceClassesOrInterfaces = new HashMap<>();
 		
 		for(int i=0; i< types.size(); i++){
 			TypeDeclaration<?> node = types.get(i);
 			ArrayList<ClassInterfaceAttributeInfo> attributeInfo = getAttributes(node, classOrInterfaceNames);
 			ArrayList<ClassInterfaceMethodInfo> methodsInfo = getMethodsDetails(node, attributeInfo);
-			ClassInterfaceInfo classOrInterfaceInfo = new ClassInterfaceInfo(attributeInfo, methodsInfo, getImplementsInfo(node), getExtendsInfo(node), getUsesInfo(attributeInfo, methodsInfo, interfaceNames));
+			ClassInterfaceInfo classOrInterfaceInfo = new ClassInterfaceInfo(attributeInfo, methodsInfo, getImplementsInfo(node), getExtendsInfo(node), getUsesInfo(attributeInfo, methodsInfo, classOrInterfaceNames));
 			sourceClassesOrInterfaces.put(node.getNameAsString(), classOrInterfaceInfo);
 		}
 	

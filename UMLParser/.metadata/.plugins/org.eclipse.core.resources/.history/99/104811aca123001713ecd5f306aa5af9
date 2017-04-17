@@ -49,7 +49,7 @@ public class ParsingEngine {
 		}
 		//classInterfaceNames.addAll(interfaceNames);
 		
-		HashMap<String, ClassInterfaceInfo> ClassInterfaceDetails = getClassOrInterfaceInfo(types, classInterfaceNames, interfaceNames);
+		HashMap<String, ClassInterfaceInfo> ClassInterfaceDetails = getClassOrInterfaceInfo(types, classInterfaceNames);
 		//System.out.println("\n Types are : " + types.size());
 		
 		System.out.println("\n Class Names : " + classInterfaceNames.toString());
