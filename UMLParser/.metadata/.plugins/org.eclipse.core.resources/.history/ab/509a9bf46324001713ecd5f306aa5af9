@@ -51,7 +51,7 @@ public class UmlParser {
 				else
 				{
 					System.out.println("Folder found");
-					readSourceCode(sourceCodeFiles, sourceFolder, outputFileName);
+					readSourceCode(sourceCodeFiles, sourceFolder);
 				}
 			}
 			catch(Exception e)
@@ -119,7 +119,7 @@ public class UmlParser {
 	 * @param javaSourceFiles list of java source files
 	 * @param sourceFolderPath path of directory which contains the source files
 	 */
-	private static void readSourceCode(ArrayList<String> javaSourceFiles, String sourceFolderPath, String outputFileName){
+	private static void readSourceCode(ArrayList<String> javaSourceFiles, String sourceFolderPath){
 		StringBuilder fileContents = new StringBuilder();
 		for(int i=0; i<javaSourceFiles.size(); i++){
 			try
@@ -146,6 +146,6 @@ public class UmlParser {
 			}
 		}
 		String parseContent = fileContents.toString().replace("import", "//import");
-		ParsingEngine.parseCode(parseContent, outputFileName);
+		ParsingEngine.parseCode(parseContent);
 	}
 }

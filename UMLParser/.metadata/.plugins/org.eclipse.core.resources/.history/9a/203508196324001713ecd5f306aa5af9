@@ -22,7 +22,7 @@ public class UmlParser {
 		String sourceFolder = "";
 		String outputFileName = "";
 		
-		//Check for input arguments
+		Check for input arguments
 		if(args.length == 0)
 			System.out.println("Input Invalid. Please provide source code folder path.");
 
@@ -40,9 +40,9 @@ public class UmlParser {
 			{
 				outputFileName = args[1];
 			}
-
+		}
 			try{
-				//sourceFolder = "/home/amita/GitHub 202/Amita-Kamat-CMPE-202/Test-Cases/UmlParser-1/";
+				sourceFolder = "/home/amita/GitHub 202/Amita-Kamat-CMPE-202/Test-Cases/UmlParser-1/";
 				ArrayList<String> sourceCodeFiles = getJavaSourceFiles(sourceFolder);
 				if(sourceCodeFiles.size() == 0)
 				{
@@ -51,14 +51,14 @@ public class UmlParser {
 				else
 				{
 					System.out.println("Folder found");
-					readSourceCode(sourceCodeFiles, sourceFolder, outputFileName);
+					readSourceCode(sourceCodeFiles, sourceFolder);
 				}
 			}
 			catch(Exception e)
 			{
 				System.out.println(e.getMessage());
 			}
-		}
+		//}
 		
 	}
 	
@@ -119,7 +119,7 @@ public class UmlParser {
 	 * @param javaSourceFiles list of java source files
 	 * @param sourceFolderPath path of directory which contains the source files
 	 */
-	private static void readSourceCode(ArrayList<String> javaSourceFiles, String sourceFolderPath, String outputFileName){
+	private static void readSourceCode(ArrayList<String> javaSourceFiles, String sourceFolderPath){
 		StringBuilder fileContents = new StringBuilder();
 		for(int i=0; i<javaSourceFiles.size(); i++){
 			try
@@ -146,6 +146,6 @@ public class UmlParser {
 			}
 		}
 		String parseContent = fileContents.toString().replace("import", "//import");
-		ParsingEngine.parseCode(parseContent, outputFileName);
+		ParsingEngine.parseCode(parseContent);
 	}
 }
