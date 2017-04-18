@@ -42,7 +42,7 @@ public class GrammarEngine {
 					ClassInterfaceAttributeInfo eachAttribute = attributes.get(i);
 					
 					//Since we consider only private and public attributes.
-					if(eachAttribute.getAccessModifier() != "" && eachAttribute.getOneToOne() == "" && eachAttribute.getOneToMany() == ""){
+					if(eachAttribute.getAccessModifier() != ""){
 						if(eachAttribute.getAccessModifier() == "Private")
 							grammar += Constants.privateAccess;
 						else
