@@ -11,6 +11,7 @@ package com.amitakamat.umlparser;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,8 @@ import java.util.Optional;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
@@ -38,7 +41,6 @@ public class ParsingEngine {
 		NodeList<TypeDeclaration<?>> types = compileUnit.getTypes();
 		
 		ArrayList<String> classNames = getClassNames(types);
-		System.out.println(classNames.toString());
 		ArrayList<String> interfaceNames = getInterfaceNames(types);
 		ArrayList<String> classInterfaceNames = new ArrayList<String>();
 		for (String className : classNames){
@@ -47,29 +49,23 @@ public class ParsingEngine {
 		for (String interfaceName : interfaceNames){
 			classInterfaceNames.add(new String(interfaceName));
 		}
-		//classInterfaceNames.addAll(interfaceNames);
 		
 		HashMap<String, ClassInterfaceInfo> ClassInterfaceDetails = getClassOrInterfaceInfo(types, classInterfaceNames, interfaceNames);
-		//System.out.println("\n Types are : " + types.size());
-		
-		System.out.println("\n Class Names : " + classInterfaceNames.toString());
-		System.out.println("\n Class Details: ");
-		for(int i=0;i<classInterfaceNames.size(); i++){
-			System.out.println(ClassInterfaceDetails.get(classInterfaceNames.get(i)));
-		}
 		
 		String outputFile = "../../Output-Diagrams/" + outputFileName;
 		String grammar = GrammarEngine.generateGrammar(ClassInterfaceDetails, classNames, interfaceNames);
-		//String grammar = "@startuml\nObject <|-- ArrayList\nObject : equals()\nArrayList : Object[] elementData\nArrayList : size()\n@enduml";
+		
 		try{
+			System.out.println("Generating class diagram....");
 			SourceStringReader grammarReader = new SourceStringReader(grammar);
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			grammarReader.generateImage(outputStream);
+			System.out.println("Class Diagram generated.");
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage());
-		}
-		
+			System.out.println("Error : Class Diagram could not be generated.");
+		}		
 	}
 	
 	private static ArrayList<String> getClassNames(NodeList<TypeDeclaration<?>> types){
@@ -103,7 +99,7 @@ public class ParsingEngine {
 			TypeDeclaration<?> node = types.get(i);
 			ArrayList<ClassInterfaceAttributeInfo> attributeInfo = getAttributes(node, classOrInterfaceNames);
 			ArrayList<ClassInterfaceMethodInfo> methodsInfo = getMethodsDetails(node, attributeInfo);
-			ClassInterfaceInfo classOrInterfaceInfo = new ClassInterfaceInfo(attributeInfo, methodsInfo, getImplementsInfo(node), getExtendsInfo(node), getUsesInfo(attributeInfo, methodsInfo, interfaceNames));
+			ClassInterfaceInfo classOrInterfaceInfo = new ClassInterfaceInfo(attributeInfo, methodsInfo, getImplementsInfo(node), getExtendsInfo(node), getUsesInfo(attributeInfo, methodsInfo, interfaceNames, node));
 			sourceClassesOrInterfaces.put(node.getNameAsString(), classOrInterfaceInfo);
 		}
 	
@@ -134,7 +130,7 @@ public class ParsingEngine {
 		return extendsInfo;
 	}
 	
-	private static ArrayList<String> getUsesInfo(ArrayList<ClassInterfaceAttributeInfo> attributeInfo, ArrayList<ClassInterfaceMethodInfo> methodInfo, ArrayList<String> classInterfaceNames){
+	private static ArrayList<String> getUsesInfo(ArrayList<ClassInterfaceAttributeInfo> attributeInfo, ArrayList<ClassInterfaceMethodInfo> methodInfo, ArrayList<String> classInterfaceNames, TypeDeclaration<?> node){
 		ArrayList<String> usesInfo = new ArrayList<String>();
 		if(attributeInfo.size() > 0) {
 			for(ClassInterfaceAttributeInfo eachAttribute : attributeInfo){
@@ -168,6 +164,29 @@ public class ParsingEngine {
 			}
 		}
 		
+		List<MethodDeclaration> methods = node.getMethods();
+		for(MethodDeclaration method : methods)
+		{
+			Optional<BlockStmt> body = method.getBody();
+			if(body.isPresent())
+			{				
+				for(Statement stmt : body.get().getStatements())
+				{
+					String statement = stmt.toString();
+					ArrayList<String> words = new ArrayList<String>(Arrays.asList(statement.split(" "))); 
+					for(int i=0; i<classInterfaceNames.size(); i++)
+					{
+						if(words.contains(classInterfaceNames.get(i)))
+						{
+							if(!usesInfo.contains(classInterfaceNames.get(i))){
+								usesInfo.add(classInterfaceNames.get(i));
+							}
+						}
+					}
+				}
+			}
+		}
+		
 		return usesInfo;
 	}
 	
@@ -178,19 +197,15 @@ public class ParsingEngine {
 		if(members.size() != 0){
 			for(BodyDeclaration<?> member : members){
 				FieldDeclaration field = (FieldDeclaration) member;
-				System.out.println("attribute name : " + field.getVariables().get(0).getNameAsString());
 				String oneToOne = "";
 				String oneToMany = "";
-				boolean isPrivateOrPublic = false;
 				
 				if(field.isPrivate()){
 					accessModifier = "Private";
-					isPrivateOrPublic = true;
 				}
 				
 				else if(field.isPublic()) {
 					accessModifier = "Public";
-					isPrivateOrPublic = true;
 				}
 				else{
 					accessModifier = "";
@@ -237,11 +252,9 @@ public class ParsingEngine {
 		for(BodyDeclaration<?> eachMember: body){
 			if(eachMember instanceof ConstructorDeclaration)
 			{
-				//String name = node.getNameAsString();
 				ConstructorDeclaration constructor = (ConstructorDeclaration) eachMember;
 				ArrayList<ArrayList<String>> parameters = new ArrayList<ArrayList<String>>();
 				for( int i=0; i < constructor.getParameters().size(); i++){
-					//System.out.println(method.getParameters());
 					Parameter parameter = constructor.getParameter(i);
 					ArrayList<String> eachParameter = new ArrayList<String>();
 					eachParameter.add(parameter.getNameAsString());						
@@ -270,9 +283,7 @@ public class ParsingEngine {
 						if(accessModifier == "Private" || accessModifier == "Public"){
 							String attributeName = attributeInfo.get(j).getName();
 							String getter = "get" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
-							System.out.println(getter);
 							String setter = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
-							System.out.println(setter);
 							
 							if(name.equals(getter) || name.equals(setter)){
 								attributeInfo.get(j).setAccessModifier("Public");
@@ -285,7 +296,6 @@ public class ParsingEngine {
 					{
 						ArrayList<ArrayList<String>> parameters = new ArrayList<ArrayList<String>>();
 						for( int i=0; i < method.getParameters().size(); i++){
-							//System.out.println(method.getParameters());
 							Parameter parameter = method.getParameter(i);
 							ArrayList<String> eachParameter = new ArrayList<String>();
 							eachParameter.add(parameter.getNameAsString());
@@ -299,9 +309,7 @@ public class ParsingEngine {
 					}
 				}
 			}
-		}
-		
+		}		
 		return methodList;
-	}
-	
+	}	
 }

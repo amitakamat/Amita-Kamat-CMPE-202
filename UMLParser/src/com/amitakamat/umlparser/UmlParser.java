@@ -42,7 +42,6 @@ public class UmlParser {
 			}
 
 			try{
-				//sourceFolder = "/home/amita/GitHub 202/Amita-Kamat-CMPE-202/Test-Cases/UmlParser-1/";
 				ArrayList<String> sourceCodeFiles = getJavaSourceFiles(sourceFolder);
 				if(sourceCodeFiles.size() == 0)
 				{
@@ -50,7 +49,7 @@ public class UmlParser {
 				}
 				else
 				{
-					System.out.println("Folder found");
+					System.out.println("Source folder found..");
 					readSourceCode(sourceCodeFiles, sourceFolder, outputFileName);
 				}
 			}
@@ -72,16 +71,8 @@ public class UmlParser {
 		ArrayList<String> javaFiles = new ArrayList<String>();
 		
 		try
-		{
-			//Create a log file to record all the operations carried out.
-			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("../LogFile.txt")));
-			
-			writer.write("Logs\n\n");
-			writer.write("--------Extracting java files from source Folder-----------------\n");
-			
-			//Create directory to store source files if it does not already exist
-			//if(!newDirectory.exists())
-			//	newDirectory.mkdirs();
+		{	
+			System.out.println("--------Extracting java files from source Folder-----------------");
 		
 			File sourceDirectory = new File(sourceFolder);
 			
@@ -93,18 +84,15 @@ public class UmlParser {
 			  {
 				  if (file.getName().endsWith((".java"))) 
 				  {
-			    	writer.write(file.getName() + " extracted \n");
+					System.out.println(file.getName() + " extracted");
 			    	javaFiles.add(file.getName());
 				  }
 			  }
 			}
 			else
 			{
-				writer.write("Error : Source Directory not found.\n\n");
 				System.out.println("Source Directory not found. Please ensure the path is correct and try again.");
 			}
-			
-			writer.close();
 		}
 		catch(Exception e)
 		{
@@ -135,17 +123,14 @@ public class UmlParser {
 				}
 				
 				bufferReader.close();
-				
-				//System.out.println("\n Contents of file " + javaSourceFiles.get(i) + " :\n\n");
-				//System.out.println(fileContents.toString());
-
 			}
 			catch(Exception e)
 			{
-				System.out.println("\n" + e.getMessage());
+				System.out.println(e.getMessage());
 			}
 		}
 		String parseContent = fileContents.toString().replace("import", "//import");
+		parseContent = parseContent.replace("package", "//package");
 		ParsingEngine.parseCode(parseContent, outputFileName);
 	}
 }
