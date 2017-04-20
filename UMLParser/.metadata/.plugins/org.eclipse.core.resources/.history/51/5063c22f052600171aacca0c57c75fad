@@ -13,18 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-/**
- * Class to generate grammar from the information
- */
 public class GrammarEngine {
 	
-	/**
-	 * Method to generate grammar for source code
-	 * @param classInterfaceInfo
-	 * @param classNames
-	 * @param interfaceNames
-	 * @return grammar for diagram
-	 */
 	public static String generateGrammar(HashMap<String, ClassInterfaceInfo> classInterfaceInfo, ArrayList<String> classNames, ArrayList<String> interfaceNames){
 		String grammar = Constants.startGrammar + "\n";
 		boolean blockStarted = false;

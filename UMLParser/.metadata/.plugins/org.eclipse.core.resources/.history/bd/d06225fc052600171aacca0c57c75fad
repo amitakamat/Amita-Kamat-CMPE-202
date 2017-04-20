@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-/**
- * Class to generate grammar from the information
- */
 public class GrammarEngine {
 	
 	/**

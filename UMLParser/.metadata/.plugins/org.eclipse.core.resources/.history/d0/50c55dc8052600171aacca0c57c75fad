@@ -11,7 +11,7 @@ package com.amitakamat.umlparser;
 
 import java.util.ArrayList;
 
-/**
+/*
  * Class to store the information of the methods of classes and interfaces
  */
 public class ClassInterfaceMethodInfo {

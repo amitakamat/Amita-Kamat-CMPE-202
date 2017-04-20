@@ -11,7 +11,7 @@ package com.amitakamat.umlparser;
 
 import java.util.ArrayList;
 
-/**
+/*
  * Class to store the information of the methods of classes and interfaces
  */
 public class ClassInterfaceMethodInfo {
@@ -31,7 +31,7 @@ public class ClassInterfaceMethodInfo {
 	}
 	
 	/*
-	 * get set properties to get parameters of the method
+	 * get properties to get parameters of the method
 	 */
 	public ArrayList<ArrayList<String>> getParameters(){
 		return this.parameters;
@@ -43,13 +43,13 @@ public class ClassInterfaceMethodInfo {
 	}
 	
 	/*
-	 * get set properties to get return type of the method
+	 * get properties to get return type of the method
 	 */
 	public String getReturnType(){
 		return this.returnType;
 	}
 	
-	public void setReturnType(String returnType){
+	public void setDataType(String returnType){
 		this.returnType = returnType;
 	}
 	

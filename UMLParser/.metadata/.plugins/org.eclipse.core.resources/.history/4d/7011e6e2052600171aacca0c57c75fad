@@ -12,9 +12,6 @@ package com.amitakamat.umlparser;
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * Class to get parameters and read source code
- */
 public class UmlParser {
 
 	/**

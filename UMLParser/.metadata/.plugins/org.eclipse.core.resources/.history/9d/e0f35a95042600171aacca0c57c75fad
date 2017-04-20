@@ -34,9 +34,6 @@ import com.github.javaparser.ast.type.Type;
 
 import net.sourceforge.plantuml.SourceStringReader;
 
-/**
- * Class to parse the source code and extract information for generating grammar
- */
 public class ParsingEngine {
 
 	/**
@@ -148,11 +145,6 @@ public class ParsingEngine {
 		return implementsInfo;
 	}
 	
-	/**
-	 * Method to get extends information for classes
-	 * @param node
-	 * @return Arraylist of extends information.
-	 */
 	private static ArrayList<String> getExtendsInfo(TypeDeclaration<?> node){
 		ArrayList<String> extendsInfo = new ArrayList<String>();
 		if(node instanceof ClassOrInterfaceDeclaration){
@@ -165,14 +157,6 @@ public class ParsingEngine {
 		return extendsInfo;
 	}
 	
-	/**
-	 * Method to get uses information for classes
-	 * @param attributeInfo
-	 * @param methodInfo
-	 * @param classInterfaceNames
-	 * @param node
-	 * @return Arraylist of uses information.
-	 */
 	private static ArrayList<String> getUsesInfo(ArrayList<ClassInterfaceAttributeInfo> attributeInfo, ArrayList<ClassInterfaceMethodInfo> methodInfo, ArrayList<String> classInterfaceNames, TypeDeclaration<?> node){
 		ArrayList<String> usesInfo = new ArrayList<String>();
 		if(attributeInfo.size() > 0) {
@@ -233,12 +217,6 @@ public class ParsingEngine {
 		return usesInfo;
 	}
 	
-	/**
-	 * Method to get uattributes for classes
-	 * @param classInterfaceNames
-	 * @param node
-	 * @return Arraylist of attributes information.
-	 */
 	private static ArrayList<ClassInterfaceAttributeInfo> getAttributes(TypeDeclaration<?> node, ArrayList<String> classOrInterfaceNames){
 		List<FieldDeclaration> members = node.getFields();
 		String accessModifier = null;
@@ -294,12 +272,6 @@ public class ParsingEngine {
 		return attributes;
 	}
 	
-	/**
-	 * Method to get methods information for classes
-	 * @param attributeInfo
-	 * @param node
-	 * @return Arraylist of methods information.
-	 */
 	private static ArrayList<ClassInterfaceMethodInfo> getMethodsDetails(TypeDeclaration<?> node, ArrayList<ClassInterfaceAttributeInfo> attributeInfo){
 		ArrayList<ClassInterfaceMethodInfo> methodList = new ArrayList<ClassInterfaceMethodInfo>();
 		List<MethodDeclaration> methods = node.getMethods();

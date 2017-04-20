@@ -34,9 +34,6 @@ import com.github.javaparser.ast.type.Type;
 
 import net.sourceforge.plantuml.SourceStringReader;
 
-/**
- * Class to parse the source code and extract information for generating grammar
- */
 public class ParsingEngine {
 
 	/**

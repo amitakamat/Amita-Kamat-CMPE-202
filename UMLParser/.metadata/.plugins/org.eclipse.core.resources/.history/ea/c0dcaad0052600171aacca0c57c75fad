@@ -9,9 +9,6 @@
 
 package com.amitakamat.umlparser;
 
-/**
- * Class to store the constants used to generate grammar
- */
 public class Constants {
 	public static final String privateAccess = "-";
 	public static final String publicAccess = "+";

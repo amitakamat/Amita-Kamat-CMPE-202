@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-/**
- * Class to generate grammar from the information
- */
 public class GrammarEngine {
 	
 	/**
@@ -23,7 +20,7 @@ public class GrammarEngine {
 	 * @param classInterfaceInfo
 	 * @param classNames
 	 * @param interfaceNames
-	 * @return grammar for diagram
+	 * @return Arraylist of methods information.
 	 */
 	public static String generateGrammar(HashMap<String, ClassInterfaceInfo> classInterfaceInfo, ArrayList<String> classNames, ArrayList<String> interfaceNames){
 		String grammar = Constants.startGrammar + "\n";

@@ -9,7 +9,7 @@
 
 package com.amitakamat.umlparser;
 
-/**
+/*
  * Class to store the information of the attributes of classes and interfaces
  */
 public class ClassInterfaceAttributeInfo {

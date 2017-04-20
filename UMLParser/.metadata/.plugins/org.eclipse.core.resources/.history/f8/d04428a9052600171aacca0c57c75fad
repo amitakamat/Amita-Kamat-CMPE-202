@@ -11,17 +11,11 @@ package com.amitakamat.umlparser;
 
 import java.util.ArrayList;
 
-/**
- * Class to store the information of the methods of classes and interfaces
- */
 public class ClassInterfaceMethodInfo {
 	private String name; 
 	private ArrayList<ArrayList<String>> parameters;
 	private String returnType;
 	
-	/*
-	 * get set properties to get name of the method
-	 */
 	public String getName(){
 		return this.name;
 	}
@@ -30,26 +24,19 @@ public class ClassInterfaceMethodInfo {
 		this.name = name;
 	}
 	
-	/*
-	 * get set properties to get parameters of the method
-	 */
 	public ArrayList<ArrayList<String>> getParameters(){
 		return this.parameters;
 	}
 	
-	
-	public void setParameters(ArrayList<ArrayList<String>> parameters){
+	public void setAccessModifier(ArrayList<ArrayList<String>> parameters){
 		this.parameters = parameters;
 	}
 	
-	/*
-	 * get set properties to get return type of the method
-	 */
 	public String getReturnType(){
 		return this.returnType;
 	}
 	
-	public void setReturnType(String returnType){
+	public void setDataType(String returnType){
 		this.returnType = returnType;
 	}
 	
