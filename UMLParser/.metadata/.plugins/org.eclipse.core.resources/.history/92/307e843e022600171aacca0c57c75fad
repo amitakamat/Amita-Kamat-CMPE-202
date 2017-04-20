@@ -65,15 +65,7 @@ public class GrammarEngine {
 						grammar += ",";
 					}
 				}
-				
-				if(!eachMethod.getName().equals(name))
-				{
-					grammar += "):" + eachMethod.getReturnType() + "\n";
-				}
-				else
-				{
-					grammar += ")\n";
-				}
+				grammar += "):" + eachMethod.getReturnType() + "\n";
 			}
 			
 			if(blockStarted){
