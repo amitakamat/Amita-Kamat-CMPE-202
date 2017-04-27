@@ -1,0 +1,230 @@
+/**
+ * @author Amita Vasudev Kamat
+ * 
+ * CMPE 202 - Personal Project
+ * 
+ * Spring 2017
+ *
+ */
+
+package com.amitakamat.umlparser;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+/**
+ * Class to generate grammar from the information
+ */
+public class GrammarEngine {
+	private static HashMap<String, HashMap<String, ArrayList<String>>> associationMap = new HashMap<String, HashMap<String, ArrayList<String>>>();
+	
+	/**
+	 * Method to generate grammar for source code
+	 * @param classInterfaceInfo
+	 * @param classNames
+	 * @param interfaceNames
+	 * @return grammar for diagram
+	 */
+	public static String generateGrammar(HashMap<String, ClassInterfaceInfo> classInterfaceInfo, ArrayList<String> classNames, ArrayList<String> interfaceNames)
+	{
+		String grammar = Constants.startGrammar + "\n";
+		boolean blockStarted = false;
+		HashMap<String, ArrayList<String>> associationTarget= new HashMap<String, ArrayList<String>>();
+		String oneToOne = "OneToOne";
+		String oneToMany = "OneToMany";
+		
+		for(Entry<String, ClassInterfaceInfo> e: classInterfaceInfo.entrySet()){
+			String name = e.getKey();
+			blockStarted = false;
+			
+			if(interfaceNames.contains(name)){
+				grammar += Constants.interfaceLabel + name + " {\n";
+				blockStarted = true;
+			}
+			
+			if(classNames.contains(name)){
+				grammar += Constants.classLabel + name + " {\n";
+				blockStarted = true;
+				
+				ArrayList<ClassInterfaceAttributeInfo> attributes = e.getValue().getAttributes();
+				for(int i=0 ;i<attributes.size(); i++){
+					ClassInterfaceAttributeInfo eachAttribute = attributes.get(i);
+					
+					//Since we consider only private and public attributes.
+					if(eachAttribute.getAccessModifier() != "" && eachAttribute.getOneToOne() == "" && eachAttribute.getOneToMany() == ""){
+						if(eachAttribute.getAccessModifier() == "Private")
+							grammar += Constants.privateAccess;
+						else
+							grammar += Constants.publicAccess;
+					
+						grammar += eachAttribute.getName() + " : " + eachAttribute.getDataType() + "\n";
+					}
+				}
+			}
+			
+			ArrayList<ClassInterfaceMethodInfo> methods = e.getValue().getMethods();
+			for(int i=0; i<methods.size(); i++)
+			{
+				ClassInterfaceMethodInfo eachMethod = methods.get(i);
+				grammar += Constants.publicAccess + " " + eachMethod.getName() + "(";
+				
+				for(int j=0; j<eachMethod.getParameters().size(); j++){
+					ArrayList<String> eachParameter = eachMethod.getParameters().get(j);
+					grammar += eachParameter.get(0) + ":" + eachParameter.get(1);
+					if(j != eachMethod.getParameters().size()-1){
+						grammar += ",";
+					}
+				}
+				
+				if(!eachMethod.getName().equals(name))
+				{
+					grammar += "):" + eachMethod.getReturnType() + "\n";
+				}
+				else
+				{
+					grammar += ")\n";
+				}
+			}
+			
+			if(blockStarted){
+				grammar += "}\n";
+			}
+		}
+			
+		for(Entry<String, ClassInterfaceInfo> e: classInterfaceInfo.entrySet()){
+			String name = e.getKey();			
+			ArrayList<String> implementsInfo = e.getValue().getImplemensInfo();
+			if(implementsInfo.size() != 0){
+				for(int i=0; i<implementsInfo.size(); i++){
+					if(classNames.contains(name)){
+						grammar += implementsInfo.get(i) + Constants.implementsSign + name + "\n";
+					}
+				}
+			}
+			
+			ArrayList<String> extendsInfo = e.getValue().getExtendsInfo();
+			if(extendsInfo.size() != 0){
+				for(int i=0; i<extendsInfo.size(); i++){
+					if(classNames.contains(name)){
+						grammar += extendsInfo.get(i) + Constants.extendsSign + name + "\n";
+					}
+				}
+			}
+			
+			ArrayList<String> usesInfo = e.getValue().getUsesInfo();
+			if(usesInfo.size() != 0){
+				for(int i=0; i<usesInfo.size(); i++){
+					if(classNames.contains(name)){
+						grammar += usesInfo.get(i) + Constants.usesSign + name + " : < uses \n";
+					}
+				}
+			}
+			
+			ArrayList<ClassInterfaceAttributeInfo> attributes = e.getValue().getAttributes();
+			for(int j=0 ;j<attributes.size(); j++){
+				ArrayList<String> newTarget = new ArrayList<String>();
+				associationTarget = new ArrayList<String, ArrayList<String>>();
+				ClassInterfaceAttributeInfo eachAttribute = attributes.get(j);
+				String oneToManyInfo = eachAttribute.getOneToMany();
+				String oneToOneInfo = eachAttribute.getOneToOne();
+				
+				if(oneToManyInfo != ""){
+					HashMap<String, ArrayList<String>> target = associationMap.get(oneToManyInfo);
+					if(target.size() != 0){
+							if(target.get(oneToMany))
+							{
+								ArrayList<String> allTargets = target.get(oneToMany);
+								if(allTargets.contains(name)){
+									grammar.replace(oneToManyInfo + " --\"*\" " + e.getKey(),
+											oneToManyInfo + " \"*\"--\"*\" " + e.getKey());
+									GrammarEngine.AddMapping(name, oneToMany, oneToManyInfo);										
+								}
+							}
+							else if(target.get(oneToOne))
+							{
+								ArrayList<String> allTargets = target.get(oneToOne);
+								if(allTargets.contains(name)){
+									grammar.replace(oneToManyInfo + " -- " + e.getKey(),
+											oneToManyInfo + " \"*\"-- " + e.getKey());
+									GrammarEngine.AddMapping(name, oneToMany, oneToManyInfo);									
+								}
+							}
+							else
+							{
+								grammar += name + " --\"*\" " + oneToManyInfo + "\n";
+								GrammarEngine.AddMapping(name, oneToMany, oneToManyInfo);
+							}
+					}						
+					else{
+						GrammarEngine.AddMapping(name, oneToMany, oneToManyInfo);	
+						grammar += name + " --\"*\" " + oneToManyInfo + "\n";
+					}
+				}				
+				if(oneToOneInfo != ""){
+					HashMap<String, ArrayList<String>> target = associationMap.get(oneToOneInfo);
+					if(target.size() != 0){
+							if(target.get(oneToMany) != null)
+							{
+								ArrayList<String> allTargets = target.get(oneToMany);
+								if(allTargets.contains(name)){
+									GrammarEngine.AddMapping(name, oneToOne, oneToOneInfo);
+								}
+							}
+							else if (target.get(oneToOne) != null){
+								ArrayList<String> allTargets = target.get(oneToOne);
+								if(allTargets.contains(name)){
+									GrammarEngine.AddMapping(name, oneToOne, oneToOneInfo);
+								}
+							}
+							else{								
+								grammar += name + " -- " +  oneToOneInfo + "\n";
+								GrammarEngine.AddMapping(name, oneToOne, oneToOneInfo);
+							}
+					}
+					else
+					{
+						/*if(target.get(oneToOne) != name || target.get(oneToMany) != name){
+						System.out.println("One to one: " + name + " - " + target.get(oneToOne));
+						System.out.println("One to many: " + name + " - " + target.get(oneToMany));*/
+							grammar += name + " -- " +  oneToOneInfo + "\n";	
+							GrammarEngine.AddMapping(name, oneToOne, oneToOneInfo);	
+						//}
+					}
+				}
+			}
+		}
+		
+		grammar += Constants.endGrammar;
+		
+		System.out.println(grammar);
+		return grammar;
+	}
+	
+	private static void AddMapping(String source, String relation, String target){
+		HashMap<String, ArrayList<String>> existingMap = associationMap.get(source);
+		HashMap<String, ArrayList<String>> associationTarget = new HashMap<String, ArrayList<String>>();
+		ArrayList<String> newTarget = new ArrayList<String>();
+		if(existingMap == null){
+			newTarget.add(target);
+			existingMap.add(relation, newTarget);
+		}
+		else{
+				ArrayList<String> allTargets = existingMap.get(relation);
+				if(allTargets != null){
+					if(!allTargets.contains(target)){
+						allTargets.add(target);
+					}
+				}
+				else{
+					allTargets.add(target);
+				}
+				existingMap.add(relation, allTargets);
+			}
+		}
+	a	associationMap.put(source, existingMap);	
+	}
+}
+
+
+

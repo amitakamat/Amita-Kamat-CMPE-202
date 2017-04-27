@@ -2,19 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Optional" key="selection"/>
+		<item value="setAccessModifier" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="setaccessmodifier"/>
+			<item value="System"/>
 			<item value="optional"/>
 			<item value="system.ou"/>
 			<item value="usesin"/>
 			<item value="getClassOrInterfaceInfo"/>
 			<item value="getUsesInfo"/>
 			<item value="uses"/>
-			<item value="many"/>
 		</list>
 		<list key="replacehistory">
 		</list>
