@@ -157,6 +157,7 @@ public class GrammarEngine {
 							}
 					}						
 					else{
+						System.out.println("First association");
 						grammar += name + " --\"*\" " + oneToManyInfo + "\n";
 						GrammarEngine.AddMapping(name, oneToMany, oneToManyInfo);
 					}
@@ -208,8 +209,13 @@ public class GrammarEngine {
 					}
 					else
 					{
+						/*if(target.get(oneToOne) != name || target.get(oneToMany) != name){
+						System.out.println("One to one: " + name + " - " + target.get(oneToOne));
+						System.out.println("One to many: " + name + " - " + target.get(oneToMany));*/
 							grammar += name + " -- " +  oneToOneInfo + "\n";
+							System.out.println("One to one");
 							GrammarEngine.AddMapping(name, oneToOne, oneToOneInfo);	
+						//}
 					}
 				}
 			}
@@ -222,16 +228,21 @@ public class GrammarEngine {
 	}
 	
 	private static void AddMapping(String source, String relation, String target){
+		System.out.println("Target :" + source);
 		HashMap<String, ArrayList<String>> existingMap = associationMap.get(source);
 		HashMap<String, ArrayList<String>> associationTarget = new HashMap<String, ArrayList<String>>();
 		ArrayList<String> newTarget = new ArrayList<String>();
 		if(existingMap == null){
 			existingMap = new HashMap<String, ArrayList<String>>();
+			System.out.println("New Target");
 			newTarget.add(target);
+			System.out.println("Relation :" + relation + " target: " + newTarget);
 			existingMap.put(relation, newTarget);
+			System.out.println("Map added");
 		}
 		else{
 				ArrayList<String> allTargets = existingMap.get(relation);
+				System.out.println("Alltargets : " + allTargets);
 				if(allTargets != null){
 					if(!allTargets.contains(target)){
 						allTargets.add(target);
@@ -244,6 +255,7 @@ public class GrammarEngine {
 				existingMap.put(relation, allTargets);
 		}
 		associationMap.put(source, existingMap);
+		System.out.println("Source : " + source + " ->" + existingMap.get(relation));
 	}
 }
 

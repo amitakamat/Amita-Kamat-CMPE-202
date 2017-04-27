@@ -157,6 +157,7 @@ public class GrammarEngine {
 							}
 					}						
 					else{
+						System.out.println("First association");
 						grammar += name + " --\"*\" " + oneToManyInfo + "\n";
 						GrammarEngine.AddMapping(name, oneToMany, oneToManyInfo);
 					}
